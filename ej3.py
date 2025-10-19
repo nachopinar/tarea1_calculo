@@ -1,4 +1,5 @@
 import math
+import csv
 from math import sqrt
 
 # Función que estamos estudiando
@@ -141,13 +142,126 @@ def metodo_punto_medio(n):
 
 
 # ============================================================================
+# EJERCICIO 3.2: Tablas comparativas de los métodos
+# ============================================================================
+
+def generar_tabla_comparativa_metodos(n_inicio, n_fin, incremento, numero_tabla):
+    """
+    Genera una tabla comparativa de los tres métodos para un rango específico de N.
+    
+    Parámetros:
+    - n_inicio: Valor inicial de N
+    - n_fin: Valor final de N
+    - incremento: Paso entre valores consecutivos de N
+    - numero_tabla: Número de la tabla para el título
+    """
+    valor_pi = math.pi
+    
+    print("\n" + "=" * 120)
+    print(f"TABLA {numero_tabla}: Comparación de métodos - N variando de {n_inicio} a {n_fin} (incremento de {incremento})")
+    print("=" * 120)
+    print(f"{'N':>6} | {'Rectángulos':>15} | {'Residuo':>12} | {'Trapecio':>15} | {'Residuo':>12} | {'Punto Medio':>15} | {'Residuo':>12}")
+    print("-" * 120)
+    
+    for n in range(n_inicio, n_fin + 1, incremento):
+        # Calcular aproximaciones con cada método
+        aprox_rect = metodo_rectangulos(n)
+        aprox_trap = metodo_trapecio(n)
+        aprox_medio = metodo_punto_medio(n)
+        
+        # Calcular residuos
+        residuo_rect = abs(aprox_rect - valor_pi)
+        residuo_trap = abs(aprox_trap - valor_pi)
+        residuo_medio = abs(aprox_medio - valor_pi)
+        
+        print(f"{n:6d} | {aprox_rect:15.10f} | {residuo_rect:12.10f} | {aprox_trap:15.10f} | {residuo_trap:12.10f} | {aprox_medio:15.10f} | {residuo_medio:12.10f}")
+
+
+def generar_tablas_comparativas_metodos():
+    """
+    Genera tres tablas comparativas de los métodos de integración.
+    """
+    # Tabla 1: N de 10 a 100, variando de 10 en 10
+    generar_tabla_comparativa_metodos(n_inicio=10, n_fin=100, incremento=10, numero_tabla=1)
+    
+    # Tabla 2: N de 100 a 1000, variando de 100 en 100
+    generar_tabla_comparativa_metodos(n_inicio=100, n_fin=1000, incremento=100, numero_tabla=2)
+    
+    # Tabla 3: N de 1000 a 10000, variando de 1000 en 1000
+    generar_tabla_comparativa_metodos(n_inicio=1000, n_fin=10000, incremento=1000, numero_tabla=3)
+    
+    # Mostrar valor de referencia de π
+    print("\n" + "=" * 120)
+    print(f"Valor de π (referencia): {math.pi:.10f}")
+    print("=" * 120)
+
+
+def generar_tabla_individual_csv_metodos(archivo_csv, n_inicio, n_fin, incremento, numero_tabla):
+    """
+    Genera una tabla comparativa de métodos y la escribe en un archivo CSV.
+    
+    Parámetros:
+    - archivo_csv: Objeto writer de CSV donde escribir los datos
+    - n_inicio: Valor inicial de N
+    - n_fin: Valor final de N
+    - incremento: Paso entre valores consecutivos de N
+    - numero_tabla: Número de la tabla para identificación
+    """
+    valor_pi = math.pi
+    
+    # Escribir encabezado de la tabla
+    archivo_csv.writerow([])  # Línea en blanco
+    archivo_csv.writerow([f"TABLA {numero_tabla}: N variando de {n_inicio} a {n_fin} (incremento de {incremento})"])
+    archivo_csv.writerow(['N', 'Rectángulos', 'Residuo Rect', 'Trapecio', 'Residuo Trap', 'Punto Medio', 'Residuo Medio'])
+    
+    # Calcular y escribir los datos
+    for n in range(n_inicio, n_fin + 1, incremento):
+        aprox_rect = metodo_rectangulos(n)
+        aprox_trap = metodo_trapecio(n)
+        aprox_medio = metodo_punto_medio(n)
+        
+        residuo_rect = abs(aprox_rect - valor_pi)
+        residuo_trap = abs(aprox_trap - valor_pi)
+        residuo_medio = abs(aprox_medio - valor_pi)
+        
+        archivo_csv.writerow([n, aprox_rect, residuo_rect, aprox_trap, residuo_trap, aprox_medio, residuo_medio])
+
+
+def generar_tablas_csv_metodos(nombre_archivo='tablas_metodos.csv'):
+    """
+    Genera un archivo CSV con las tres tablas comparativas de métodos.
+    
+    Parámetros:
+    - nombre_archivo: Nombre del archivo CSV a crear
+    """
+    with open(nombre_archivo, 'w', newline='', encoding='utf-8') as archivo:
+        writer = csv.writer(archivo)
+        
+        # Escribir encabezado general
+        writer.writerow(['Tablas Comparativas - Métodos de Integración Numérica'])
+        writer.writerow([f'Valor de π (referencia): {math.pi:.10f}'])
+        
+        # Tabla 1: N de 10 a 100, variando de 10 en 10
+        generar_tabla_individual_csv_metodos(writer, n_inicio=10, n_fin=100, incremento=10, numero_tabla=1)
+        
+        # Tabla 2: N de 100 a 1000, variando de 100 en 100
+        generar_tabla_individual_csv_metodos(writer, n_inicio=100, n_fin=1000, incremento=100, numero_tabla=2)
+        
+        # Tabla 3: N de 1000 a 10000, variando de 1000 en 1000
+        generar_tabla_individual_csv_metodos(writer, n_inicio=1000, n_fin=10000, incremento=1000, numero_tabla=3)
+    
+    print(f"\n✓ Archivo CSV generado: {nombre_archivo}")
+
+
+# ============================================================================
 # FUNCIÓN PRINCIPAL DE PRUEBA
 # ============================================================================
 
 if __name__ == "__main__":
+    # EJERCICIO 3.1: Prueba inicial de los tres métodos
     print("\n")
     print("=" * 80)
-    print("EJERCICIO 3: COMPARACIÓN DE MÉTODOS DE INTEGRACIÓN NUMÉRICA")
+    print("EJERCICIO 3.1: IMPLEMENTACIÓN DE MÉTODOS DE INTEGRACIÓN NUMÉRICA")
     print("=" * 80)
     
     valor_pi = math.pi
@@ -176,4 +290,17 @@ if __name__ == "__main__":
     print("\n" + "=" * 80)
     print(f"Valor de π (referencia): {valor_pi:.10f}")
     print("=" * 80)
+    
+    # EJERCICIO 3.2: Generar tablas comparativas de los métodos
+    print("\n\n")
+    print("=" * 80)
+    print("EJERCICIO 3.2: TABLAS COMPARATIVAS DE MÉTODOS")
+    print("=" * 80)
+    generar_tablas_comparativas_metodos()
+    
+    # Generar también archivo CSV con las tablas
+    try:
+        generar_tablas_csv_metodos('tablas_metodos.csv')
+    except PermissionError:
+        print("\n⚠ No se pudo generar el archivo CSV (el archivo puede estar abierto en otro programa)")
 
