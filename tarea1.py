@@ -1,6 +1,8 @@
 from math import sqrt
 import math
 import csv
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 #funcion que estamos estudiando
@@ -156,6 +158,98 @@ def generar_tablas_csv(nombre_archivo='tablas_comparativas.csv'):
     
     print(f"\n✓ Archivo CSV generado: {nombre_archivo}")
 
+#Ejercicio 1.3
+
+def graficar_convergencia():
+    """
+    Genera gráficas mostrando la convergencia de las sumas inferior y superior hacia π.
+    Crea tres gráficas separadas, una para cada rango de N.
+    """
+    valor_pi = math.pi
+    
+    # Configuración general de estilo
+    plt.style.use('seaborn-v0_8-darkgrid')
+    
+    # Gráfica 1: N de 10 a 100
+    n_valores_1 = list(range(10, 101, 10))
+    suma_inf_1 = [suma_inferior(n) for n in n_valores_1]
+    suma_sup_1 = [suma_superior(n) for n in n_valores_1]
+    pi_valores_1 = [valor_pi] * len(n_valores_1)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_1, suma_inf_1, 'b-o', label='Suma Inferior', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, suma_sup_1, 'r-s', label='Suma Superior', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, pi_valores_1, 'g--', label='π (teórico)', linewidth=2)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de Sumas de Riemann hacia π\n(N = 10 a 100)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_convergencia_10_100.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_convergencia_10_100.png")
+    
+    # Gráfica 2: N de 100 a 1000
+    n_valores_2 = list(range(100, 1001, 100))
+    suma_inf_2 = [suma_inferior(n) for n in n_valores_2]
+    suma_sup_2 = [suma_superior(n) for n in n_valores_2]
+    pi_valores_2 = [valor_pi] * len(n_valores_2)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_2, suma_inf_2, 'b-o', label='Suma Inferior', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, suma_sup_2, 'r-s', label='Suma Superior', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, pi_valores_2, 'g--', label='π (teórico)', linewidth=2)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de Sumas de Riemann hacia π\n(N = 100 a 1000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_convergencia_100_1000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_convergencia_100_1000.png")
+    
+    # Gráfica 3: N de 1000 a 10000
+    n_valores_3 = list(range(1000, 10001, 1000))
+    suma_inf_3 = [suma_inferior(n) for n in n_valores_3]
+    suma_sup_3 = [suma_superior(n) for n in n_valores_3]
+    pi_valores_3 = [valor_pi] * len(n_valores_3)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_3, suma_inf_3, 'b-o', label='Suma Inferior', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, suma_sup_3, 'r-s', label='Suma Superior', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, pi_valores_3, 'g--', label='π (teórico)', linewidth=2)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de Sumas de Riemann hacia π\n(N = 1000 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_convergencia_1000_10000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_convergencia_1000_10000.png")
+    
+    # Gráfica combinada con todos los valores
+    n_valores_todos = n_valores_1 + n_valores_2 + n_valores_3
+    suma_inf_todos = suma_inf_1 + suma_inf_2 + suma_inf_3
+    suma_sup_todos = suma_sup_1 + suma_sup_2 + suma_sup_3
+    pi_valores_todos = [valor_pi] * len(n_valores_todos)
+    
+    plt.figure(figsize=(12, 7))
+    plt.plot(n_valores_todos, suma_inf_todos, 'b-o', label='Suma Inferior', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, suma_sup_todos, 'r-s', label='Suma Superior', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, pi_valores_todos, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de Sumas de Riemann hacia π\n(Visión completa: N = 10 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_convergencia_completa.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_convergencia_completa.png")
+    
+    print("\n" + "=" * 70)
+    print("Todas las gráficas han sido generadas exitosamente")
+    print("=" * 70)
+
 # Prueba de las funciones
 if __name__ == "__main__":
     print("Convergencia de sumas inferior y superior")
@@ -179,6 +273,14 @@ if __name__ == "__main__":
     generar_tablas_comparativas()
     
     # Generar también archivo CSV con las tablas
-    generar_tablas_csv('tablas_comparativas.csv')
-
+    try:
+        generar_tablas_csv('tablas_comparativas.csv')
+    except PermissionError:
+        print("\n⚠ No se pudo generar el archivo CSV (el archivo puede estar abierto en otro programa)")
+    
+    # Ejercicio 1.3: Generar gráficas de convergencia
+    print("\n\n")
+    print("EJERCICIO 1.3: GRÁFICAS DE CONVERGENCIA")
+    print("=" * 50)
+    graficar_convergencia()
 
