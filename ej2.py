@@ -2,6 +2,7 @@ import math
 import random
 import csv
 import matplotlib.pyplot as plt
+import numpy as np
 
 # Función que estamos estudiando
 def funcion(x):
@@ -451,6 +452,135 @@ def graficar_convergencia_particiones():
     print("=" * 70)
 
 
+def graficar_funcion_con_rectangulos(n=100):
+    """
+    Grafica la función f(x) = 2*sqrt(1-x²) junto con los rectángulos de aproximación
+    para cada tipo de partición (equiespaciada, aleatoria, coseno) con N puntos.
+    
+    Parámetros:
+    - n: Cantidad de puntos de la partición (por defecto 100)
+    """
+    print(f"\nGenerando gráficas de la función con rectángulos de aproximación (N={n})...")
+    
+    # Valores para graficar la función continua
+    x_continuo = np.linspace(-1, 1, 1000)
+    y_continuo = [funcion(x) for x in x_continuo]
+    
+    # Generar las tres particiones
+    particion_equi = particion_equiespaciada(n)
+    particion_alea = particion_aleatoria_uniforme(n)
+    particion_cos = particion_coseno(n)
+    
+    # ========================================================================
+    # Gráfica 1: Partición Equiespaciada
+    # ========================================================================
+    plt.figure(figsize=(12, 8))
+    
+    # Graficar la función continua
+    plt.plot(x_continuo, y_continuo, 'b-', linewidth=2, label='f(x) = 2√(1-x²)', zorder=3)
+    
+    # Graficar los rectángulos
+    for i in range(len(particion_equi) - 1):
+        x_izq = particion_equi[i]
+        x_der = particion_equi[i + 1]
+        x_medio = (x_izq + x_der) / 2.0
+        
+        # Verificar que el punto medio esté en el dominio
+        if -1.0 <= x_medio <= 1.0:
+            altura = funcion(x_medio)
+            ancho = x_der - x_izq
+            
+            # Dibujar rectángulo
+            plt.bar(x_medio, altura, width=ancho, alpha=0.3, 
+                   edgecolor='red', color='lightcoral', align='center', zorder=1)
+    
+    plt.xlabel('x', fontsize=12)
+    plt.ylabel('f(x)', fontsize=12)
+    plt.title(f'Aproximación con Partición Equiespaciada (N={n})', fontsize=14, fontweight='bold')
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=11)
+    plt.tight_layout()
+    
+    nombre_archivo = f'grafica_rectangulos_equiespaciada_n{n}.png'
+    plt.savefig(nombre_archivo, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"✓ Gráfica guardada: {nombre_archivo}")
+    
+    # ========================================================================
+    # Gráfica 2: Partición Aleatoria Uniforme
+    # ========================================================================
+    plt.figure(figsize=(12, 8))
+    
+    # Graficar la función continua
+    plt.plot(x_continuo, y_continuo, 'b-', linewidth=2, label='f(x) = 2√(1-x²)', zorder=3)
+    
+    # Graficar los rectángulos
+    for i in range(len(particion_alea) - 1):
+        x_izq = particion_alea[i]
+        x_der = particion_alea[i + 1]
+        x_medio = (x_izq + x_der) / 2.0
+        
+        # Verificar que el punto medio esté en el dominio
+        if -1.0 <= x_medio <= 1.0:
+            altura = funcion(x_medio)
+            ancho = x_der - x_izq
+            
+            # Dibujar rectángulo
+            plt.bar(x_medio, altura, width=ancho, alpha=0.3, 
+                   edgecolor='green', color='lightgreen', align='center', zorder=1)
+    
+    plt.xlabel('x', fontsize=12)
+    plt.ylabel('f(x)', fontsize=12)
+    plt.title(f'Aproximación con Partición Aleatoria Uniforme (N={n})', fontsize=14, fontweight='bold')
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=11)
+    plt.tight_layout()
+    
+    nombre_archivo = f'grafica_rectangulos_aleatoria_n{n}.png'
+    plt.savefig(nombre_archivo, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"✓ Gráfica guardada: {nombre_archivo}")
+    
+    # ========================================================================
+    # Gráfica 3: Partición Coseno
+    # ========================================================================
+    plt.figure(figsize=(12, 8))
+    
+    # Graficar la función continua
+    plt.plot(x_continuo, y_continuo, 'b-', linewidth=2, label='f(x) = 2√(1-x²)', zorder=3)
+    
+    # Graficar los rectángulos
+    for i in range(len(particion_cos) - 1):
+        x_izq = particion_cos[i]
+        x_der = particion_cos[i + 1]
+        x_medio = (x_izq + x_der) / 2.0
+        
+        # Verificar que el punto medio esté en el dominio
+        if -1.0 <= x_medio <= 1.0:
+            altura = funcion(x_medio)
+            ancho = x_der - x_izq
+            
+            # Dibujar rectángulo
+            plt.bar(x_medio, altura, width=ancho, alpha=0.3, 
+                   edgecolor='purple', color='plum', align='center', zorder=1)
+    
+    plt.xlabel('x', fontsize=12)
+    plt.ylabel('f(x)', fontsize=12)
+    plt.title(f'Aproximación con Partición Coseno (N={n})', fontsize=14, fontweight='bold')
+    plt.grid(True, alpha=0.3)
+    plt.legend(fontsize=11)
+    plt.tight_layout()
+    
+    nombre_archivo = f'grafica_rectangulos_coseno_n{n}.png'
+    plt.savefig(nombre_archivo, dpi=300, bbox_inches='tight')
+    plt.close()
+    print(f"✓ Gráfica guardada: {nombre_archivo}")
+    
+    print("\n" + "="*70)
+    print("Todas las gráficas con rectángulos han sido generadas exitosamente")
+    print("="*70)
+
+
 if __name__ == "__main__":
     # EJERCICIO 2.1: Probar las funciones de particiones con ejemplos
     print("\n")
@@ -480,3 +610,10 @@ if __name__ == "__main__":
     print("EJERCICIO 2.3: GRÁFICAS DE CONVERGENCIA DE PARTICIONES")
     print("=" * 80)
     graficar_convergencia_particiones()
+    
+    # EJERCICIO 2.4: Graficar función con rectángulos de aproximación
+    print("\n\n")
+    print("=" * 80)
+    print("EJERCICIO 2.4: FUNCIÓN CON RECTÁNGULOS DE APROXIMACIÓN")
+    print("=" * 80)
+    graficar_funcion_con_rectangulos(n=100)
