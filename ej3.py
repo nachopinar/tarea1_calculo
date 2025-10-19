@@ -1,5 +1,7 @@
 import math
 import csv
+import matplotlib.pyplot as plt
+import numpy as np
 from math import sqrt
 
 # Función que estamos estudiando
@@ -254,6 +256,149 @@ def generar_tablas_csv_metodos(nombre_archivo='tablas_metodos.csv'):
 
 
 # ============================================================================
+# EJERCICIO 3.3: Gráficas de convergencia de los métodos
+# ============================================================================
+
+def graficar_convergencia_metodos():
+    """
+    Genera gráficas mostrando la convergencia de los tres métodos hacia π.
+    Crea gráficas separadas para diferentes rangos de N.
+    """
+    valor_pi = math.pi
+    
+    # Configuración general de estilo
+    plt.style.use('seaborn-v0_8-darkgrid')
+    
+    # Gráfica 1: N de 10 a 100, variando de 10 en 10
+    print("\nGenerando gráficas de convergencia...")
+    n_valores_1 = list(range(10, 101, 10))
+    aprox_rect_1 = [metodo_rectangulos(n) for n in n_valores_1]
+    aprox_trap_1 = [metodo_trapecio(n) for n in n_valores_1]
+    aprox_medio_1 = [metodo_punto_medio(n) for n in n_valores_1]
+    pi_valores_1 = [valor_pi] * len(n_valores_1)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_1, aprox_rect_1, 'b-o', label='Rectángulos', linewidth=2.5, markersize=7, alpha=0.7)
+    plt.plot(n_valores_1, aprox_trap_1, 'r--s', label='Trapecio', linewidth=2, markersize=6, alpha=0.8)
+    plt.plot(n_valores_1, aprox_medio_1, 'm-^', label='Punto Medio', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, pi_valores_1, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de métodos de integración hacia π\n(N = 10 a 100)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_metodos_10_100.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_metodos_10_100.png")
+    
+    # Gráfica 2: N de 100 a 1000, variando de 100 en 100
+    n_valores_2 = list(range(100, 1001, 100))
+    aprox_rect_2 = [metodo_rectangulos(n) for n in n_valores_2]
+    aprox_trap_2 = [metodo_trapecio(n) for n in n_valores_2]
+    aprox_medio_2 = [metodo_punto_medio(n) for n in n_valores_2]
+    pi_valores_2 = [valor_pi] * len(n_valores_2)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_2, aprox_rect_2, 'b-o', label='Rectángulos', linewidth=2.5, markersize=7, alpha=0.7)
+    plt.plot(n_valores_2, aprox_trap_2, 'r--s', label='Trapecio', linewidth=2, markersize=6, alpha=0.8)
+    plt.plot(n_valores_2, aprox_medio_2, 'm-^', label='Punto Medio', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, pi_valores_2, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de métodos de integración hacia π\n(N = 100 a 1000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_metodos_100_1000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_metodos_100_1000.png")
+    
+    # Gráfica 3: N de 1000 a 10000, variando de 1000 en 1000
+    n_valores_3 = list(range(1000, 10001, 1000))
+    aprox_rect_3 = [metodo_rectangulos(n) for n in n_valores_3]
+    aprox_trap_3 = [metodo_trapecio(n) for n in n_valores_3]
+    aprox_medio_3 = [metodo_punto_medio(n) for n in n_valores_3]
+    pi_valores_3 = [valor_pi] * len(n_valores_3)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_3, aprox_rect_3, 'b-o', label='Rectángulos', linewidth=2.5, markersize=7, alpha=0.7)
+    plt.plot(n_valores_3, aprox_trap_3, 'r--s', label='Trapecio', linewidth=2, markersize=6, alpha=0.8)
+    plt.plot(n_valores_3, aprox_medio_3, 'm-^', label='Punto Medio', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, pi_valores_3, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de métodos de integración hacia π\n(N = 1000 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_metodos_1000_10000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_metodos_1000_10000.png")
+    
+    # Gráfica 4: Visión completa con todos los valores
+    n_valores_todos = n_valores_1 + n_valores_2 + n_valores_3
+    aprox_rect_todos = aprox_rect_1 + aprox_rect_2 + aprox_rect_3
+    aprox_trap_todos = aprox_trap_1 + aprox_trap_2 + aprox_trap_3
+    aprox_medio_todos = aprox_medio_1 + aprox_medio_2 + aprox_medio_3
+    pi_valores_todos = [valor_pi] * len(n_valores_todos)
+    
+    plt.figure(figsize=(12, 7))
+    plt.plot(n_valores_todos, aprox_rect_todos, 'b-o', label='Rectángulos', linewidth=2.5, markersize=5, alpha=0.7)
+    plt.plot(n_valores_todos, aprox_trap_todos, 'r--s', label='Trapecio', linewidth=2, markersize=4, alpha=0.8)
+    plt.plot(n_valores_todos, aprox_medio_todos, 'm-^', label='Punto Medio', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, pi_valores_todos, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de métodos de integración hacia π\n(Visión completa: N = 10 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_metodos_completa.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_metodos_completa.png")
+    
+    # Gráfica 5: Zoom en rango pequeño (10 a 50) para ver mejor el comportamiento inicial
+    n_valores_zoom = list(range(10, 51, 5))
+    aprox_rect_zoom = [metodo_rectangulos(n) for n in n_valores_zoom]
+    aprox_trap_zoom = [metodo_trapecio(n) for n in n_valores_zoom]
+    aprox_medio_zoom = [metodo_punto_medio(n) for n in n_valores_zoom]
+    pi_valores_zoom = [valor_pi] * len(n_valores_zoom)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_zoom, aprox_rect_zoom, 'b-o', label='Rectángulos', linewidth=2.5, markersize=8, alpha=0.7)
+    plt.plot(n_valores_zoom, aprox_trap_zoom, 'r--s', label='Trapecio', linewidth=2, markersize=7, alpha=0.8)
+    plt.plot(n_valores_zoom, aprox_medio_zoom, 'm-^', label='Punto Medio', linewidth=2, markersize=7)
+    plt.plot(n_valores_zoom, pi_valores_zoom, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de métodos de integración hacia π\n(Zoom: N = 10 a 50, para observar comportamiento inicial)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_metodos_zoom_10_50.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_metodos_zoom_10_50.png")
+    
+    # Gráfica 6: Gráfica de residuos (errores) - escala logarítmica
+    residuos_rect = [abs(aprox - valor_pi) for aprox in aprox_rect_todos]
+    residuos_trap = [abs(aprox - valor_pi) for aprox in aprox_trap_todos]
+    residuos_medio = [abs(aprox - valor_pi) for aprox in aprox_medio_todos]
+    
+    plt.figure(figsize=(12, 7))
+    plt.semilogy(n_valores_todos, residuos_rect, 'b-o', label='Rectángulos', linewidth=2.5, markersize=5, alpha=0.7)
+    plt.semilogy(n_valores_todos, residuos_trap, 'r--s', label='Trapecio', linewidth=2, markersize=4, alpha=0.8)
+    plt.semilogy(n_valores_todos, residuos_medio, 'm-^', label='Punto Medio', linewidth=2, markersize=4)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Residuo (error) - Escala logarítmica', fontsize=12)
+    plt.title('Evolución del residuo |aproximación - π| con diferentes métodos\n(Escala logarítmica)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3, which='both')
+    plt.tight_layout()
+    plt.savefig('grafica_residuos_metodos.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_residuos_metodos.png")
+    
+    print("\n" + "=" * 70)
+    print("Todas las gráficas han sido generadas exitosamente")
+    print("=" * 70)
+
+
+# ============================================================================
 # FUNCIÓN PRINCIPAL DE PRUEBA
 # ============================================================================
 
@@ -303,4 +448,11 @@ if __name__ == "__main__":
         generar_tablas_csv_metodos('tablas_metodos.csv')
     except PermissionError:
         print("\n⚠ No se pudo generar el archivo CSV (el archivo puede estar abierto en otro programa)")
+    
+    # EJERCICIO 3.3: Generar gráficas de convergencia de los métodos
+    print("\n\n")
+    print("=" * 80)
+    print("EJERCICIO 3.3: GRÁFICAS DE CONVERGENCIA DE MÉTODOS")
+    print("=" * 80)
+    graficar_convergencia_metodos()
 
