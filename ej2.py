@@ -1,6 +1,7 @@
 import math
 import random
 import csv
+import matplotlib.pyplot as plt
 
 # Función que estamos estudiando
 def funcion(x):
@@ -307,6 +308,149 @@ def generar_tablas_csv_particiones(nombre_archivo='tablas_particiones.csv'):
     print(f"\n✓ Archivo CSV generado: {nombre_archivo}")
 
 
+# ============================================================================
+# EJERCICIO 2.3: Gráficas de convergencia de las particiones
+# ============================================================================
+
+def graficar_convergencia_particiones():
+    """
+    Genera gráficas mostrando la convergencia de las tres particiones hacia π.
+    Crea gráficas separadas para diferentes rangos de N.
+    """
+    valor_pi = math.pi
+    
+    # Configuración general de estilo
+    plt.style.use('seaborn-v0_8-darkgrid')
+    
+    # Gráfica 1: N de 10 a 100, variando de 10 en 10
+    print("\nGenerando gráficas de convergencia...")
+    n_valores_1 = list(range(10, 101, 10))
+    aprox_equi_1 = [aproximar_pi_con_particion(n, 'equiespaciada') for n in n_valores_1]
+    aprox_alea_1 = [aproximar_pi_con_particion(n, 'aleatoria') for n in n_valores_1]
+    aprox_cos_1 = [aproximar_pi_con_particion(n, 'coseno') for n in n_valores_1]
+    pi_valores_1 = [valor_pi] * len(n_valores_1)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_1, aprox_equi_1, 'b-o', label='Equiespaciada', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, aprox_alea_1, 'r-s', label='Aleatoria', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, aprox_cos_1, 'm-^', label='Coseno', linewidth=2, markersize=6)
+    plt.plot(n_valores_1, pi_valores_1, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de diferentes particiones hacia π\n(N = 10 a 100)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_particiones_10_100.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_particiones_10_100.png")
+    
+    # Gráfica 2: N de 100 a 1000, variando de 100 en 100
+    n_valores_2 = list(range(100, 1001, 100))
+    aprox_equi_2 = [aproximar_pi_con_particion(n, 'equiespaciada') for n in n_valores_2]
+    aprox_alea_2 = [aproximar_pi_con_particion(n, 'aleatoria') for n in n_valores_2]
+    aprox_cos_2 = [aproximar_pi_con_particion(n, 'coseno') for n in n_valores_2]
+    pi_valores_2 = [valor_pi] * len(n_valores_2)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_2, aprox_equi_2, 'b-o', label='Equiespaciada', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, aprox_alea_2, 'r-s', label='Aleatoria', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, aprox_cos_2, 'm-^', label='Coseno', linewidth=2, markersize=6)
+    plt.plot(n_valores_2, pi_valores_2, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de diferentes particiones hacia π\n(N = 100 a 1000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_particiones_100_1000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_particiones_100_1000.png")
+    
+    # Gráfica 3: N de 1000 a 10000, variando de 1000 en 1000
+    n_valores_3 = list(range(1000, 10001, 1000))
+    aprox_equi_3 = [aproximar_pi_con_particion(n, 'equiespaciada') for n in n_valores_3]
+    aprox_alea_3 = [aproximar_pi_con_particion(n, 'aleatoria') for n in n_valores_3]
+    aprox_cos_3 = [aproximar_pi_con_particion(n, 'coseno') for n in n_valores_3]
+    pi_valores_3 = [valor_pi] * len(n_valores_3)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_3, aprox_equi_3, 'b-o', label='Equiespaciada', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, aprox_alea_3, 'r-s', label='Aleatoria', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, aprox_cos_3, 'm-^', label='Coseno', linewidth=2, markersize=6)
+    plt.plot(n_valores_3, pi_valores_3, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de diferentes particiones hacia π\n(N = 1000 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_particiones_1000_10000.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_particiones_1000_10000.png")
+    
+    # Gráfica 4: Visión completa con todos los valores
+    n_valores_todos = n_valores_1 + n_valores_2 + n_valores_3
+    aprox_equi_todos = aprox_equi_1 + aprox_equi_2 + aprox_equi_3
+    aprox_alea_todos = aprox_alea_1 + aprox_alea_2 + aprox_alea_3
+    aprox_cos_todos = aprox_cos_1 + aprox_cos_2 + aprox_cos_3
+    pi_valores_todos = [valor_pi] * len(n_valores_todos)
+    
+    plt.figure(figsize=(12, 7))
+    plt.plot(n_valores_todos, aprox_equi_todos, 'b-o', label='Equiespaciada', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, aprox_alea_todos, 'r-s', label='Aleatoria', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, aprox_cos_todos, 'm-^', label='Coseno', linewidth=2, markersize=4)
+    plt.plot(n_valores_todos, pi_valores_todos, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de diferentes particiones hacia π\n(Visión completa: N = 10 a 10000)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_particiones_completa.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_particiones_completa.png")
+    
+    # Gráfica 5: Zoom en rango pequeño (10 a 50) para ver mejor el comportamiento inicial
+    n_valores_zoom = list(range(10, 51, 5))
+    aprox_equi_zoom = [aproximar_pi_con_particion(n, 'equiespaciada') for n in n_valores_zoom]
+    aprox_alea_zoom = [aproximar_pi_con_particion(n, 'aleatoria') for n in n_valores_zoom]
+    aprox_cos_zoom = [aproximar_pi_con_particion(n, 'coseno') for n in n_valores_zoom]
+    pi_valores_zoom = [valor_pi] * len(n_valores_zoom)
+    
+    plt.figure(figsize=(10, 6))
+    plt.plot(n_valores_zoom, aprox_equi_zoom, 'b-o', label='Equiespaciada', linewidth=2, markersize=7)
+    plt.plot(n_valores_zoom, aprox_alea_zoom, 'r-s', label='Aleatoria', linewidth=2, markersize=7)
+    plt.plot(n_valores_zoom, aprox_cos_zoom, 'm-^', label='Coseno', linewidth=2, markersize=7)
+    plt.plot(n_valores_zoom, pi_valores_zoom, 'g--', label='π (teórico)', linewidth=2.5)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Valor de la aproximación', fontsize=12)
+    plt.title('Convergencia de diferentes particiones hacia π\n(Zoom: N = 10 a 50, para observar comportamiento inicial)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=10)
+    plt.grid(True, alpha=0.3)
+    plt.tight_layout()
+    plt.savefig('grafica_particiones_zoom_10_50.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_particiones_zoom_10_50.png")
+    
+    # Gráfica 6: Gráfica de residuos (errores) - escala logarítmica
+    residuos_equi = [abs(aprox - valor_pi) for aprox in aprox_equi_todos]
+    residuos_alea = [abs(aprox - valor_pi) for aprox in aprox_alea_todos]
+    residuos_cos = [abs(aprox - valor_pi) for aprox in aprox_cos_todos]
+    
+    plt.figure(figsize=(12, 7))
+    plt.semilogy(n_valores_todos, residuos_equi, 'b-o', label='Equiespaciada', linewidth=2, markersize=4)
+    plt.semilogy(n_valores_todos, residuos_alea, 'r-s', label='Aleatoria', linewidth=2, markersize=4)
+    plt.semilogy(n_valores_todos, residuos_cos, 'm-^', label='Coseno', linewidth=2, markersize=4)
+    plt.xlabel('N (tamaño de partición)', fontsize=12)
+    plt.ylabel('Residuo (error) - Escala logarítmica', fontsize=12)
+    plt.title('Evolución del residuo |aproximación - π| con diferentes particiones\n(Escala logarítmica)', fontsize=14, fontweight='bold')
+    plt.legend(fontsize=11)
+    plt.grid(True, alpha=0.3, which='both')
+    plt.tight_layout()
+    plt.savefig('grafica_residuos_particiones.png', dpi=300)
+    print("✓ Gráfica guardada: grafica_residuos_particiones.png")
+    
+    print("\n" + "=" * 70)
+    print("Todas las gráficas han sido generadas exitosamente")
+    print("=" * 70)
+
+
 if __name__ == "__main__":
     # EJERCICIO 2.1: Probar las funciones de particiones con ejemplos
     print("\n")
@@ -329,3 +473,10 @@ if __name__ == "__main__":
         generar_tablas_csv_particiones('tablas_particiones.csv')
     except PermissionError:
         print("\n⚠ No se pudo generar el archivo CSV (el archivo puede estar abierto en otro programa)")
+    
+    # EJERCICIO 2.3: Generar gráficas de convergencia de particiones
+    print("\n\n")
+    print("=" * 80)
+    print("EJERCICIO 2.3: GRÁFICAS DE CONVERGENCIA DE PARTICIONES")
+    print("=" * 80)
+    graficar_convergencia_particiones()
